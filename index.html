@@ -40,43 +40,90 @@
   <style>
     html {background-color: #ebeafd; font-size: 14px;}
     body {margin: 0;}
-    header { background-color: #fff; line-height: 48px; text-align: center; box-shadow: 0 0 10px 0 rgba(0, 0, 0, .2) }
-    .message {background-color: #44337b; color: #fff;}
+    header, footer { height: 48px; }
+    header .title {position: fixed;top: 0;left: 0;right: 0;background-color: #fff; line-height: 48px;text-align: center;box-shadow: 0 0 10px 0 rgba(0, 0, 0, .2);}
+    /*.message {background-color: #44337b; color: #fff;}*/
+    p{margin: 0;}
+    .flex {display: flex;flex-wrap: wrap;}
+    .cell {flex: 1;display: block;/*width: 0;*/max-width: 100%;flex-basis: 0;}
+    #send-box{background-color: #fff;position: fixed;bottom: 0;left: 0;right: 0;min-height: 48px;box-shadow: 0 0 10px 0 rgba(0, 0, 0, .1);}
+    #send-content{outline: none;padding: 10px; line-height: 28px;word-break: break-all;}
+    #send-button{background-color: #44337b;border:none;width: 80px;text-align: center;color: #fff;height: 48px;}
+    #send-button[disabled]{background-color: #999;}
+    .message-item{padding: 5px 10px;}
+    .avatar{width: 56px;height: 56px;background-color: #fff;border-radius: 50%;overflow: hidden;}
+    .avatar:last-child{opacity: 0;}
+    .nick{padding: 5px 10px;font-size: 12px;}
+    .message .context{background-color: #44337b; color: #fff;margin: 0 8px;border-radius: 0 20px 20px 20px;padding: 10px 20px;display: inline-block;}
+    .message .context.mine{background-color: #fff; color: #333;}
+    .time{color: #999; font-size: 12px; text-align: center;}
+    .time>span{display: inline-block;padding: 4px 16px; background-color: #e0dff9;border-radius: 12px;margin: 10px 20px;}
+
+    .message-item.mine .avatar:last-child{opacity: 1;}
+    .message-item.mine .avatar:first-child{opacity: 0;}
+    .message-item.mine .message{text-align: right;}
+    .message-item.mine .message .context{border-radius: 20px 0 20px 20px;background-color: #fff;color: #333;}
   </style>
 </head>
 <body>
-  <header id="mess">正在连接...</header>
-  <div class="kuang">sdfsdf</div>
+  <header><div class="title">聊天室</div></header>
   <div id="message"></div>
+  <section>
+    <div class="time"><span>2017/10/10 17:30</span></div>
+    <div class="message-item flex">
+      <div class="avatar"></div>
+      <div class="message cell">
+        <p class="nick">送：JF是</p>
+        <div class="context">啊手动阀</div>
+      </div>
+      <div class="avatar"></div>
+    </div>
+    <div class="message-item mine flex">
+      <div class="avatar"></div>
+      <div class="message cell">
+        <p class="nick">送：JF是</p>
+        <div class="context">啊手动阀</div>
+      </div>
+      <div class="avatar"></div>
+    </div>
+  </section>
+  <footer>
+    <div id="send-box" class="flex">
+      <div id="send-content" class="cell" contenteditable="true"></div>
+      <button id="send-button">发送</button>
+    </div>
+  </footer>
   <script>
-    var mess = document.getElementById('mess');
+    // var mess = document.getElementById('mess');
     if(window.WebSocket){
-        var ws = new WebSocket('ws://192.168.112.15:8001');
+      //
+    }
 
-        ws.onopen = function(e){
-          console.log('连接服务器成功');
-          ws.send('game1');
-        }
-        ws.onclose = function(e){
-          console.log('服务器关闭');
-        }
-        ws.onerror = function(){
-          console.log('连接出错');
-        }
+    var ws = new WebSocket('ws://192.168.112.15:8001');
 
-        ws.onmessage = function(e){
-          mess.innerHTML = '聊天室'
-          document.querySelector('.kuang').onclick = function(e){
-              var time = new Date();
-              ws.send(time + '  game1点击了“' + e.target.innerHTML+'”');
-          }
-          var time = new Date();
-          const message = document.createElement('div')
-          message.className = 'message'
-          message.innerText = e.data
-          document.getElementById('message').appendChild(message)
-          // mess.innerHTML+=time+'的消息：'+e.data+'<br>'
-        }
+    ws.onopen = function(e){
+      console.log('连接服务器成功');
+      ws.send('game1');
+    }
+    ws.onclose = function(e){
+      console.log('服务器关闭');
+    }
+    ws.onerror = function(){
+      console.log('连接出错');
+    }
+
+    ws.onmessage = function(e){
+      // mess.innerHTML = '聊天室'
+      // document.querySelector('.kuang').onclick = function(e){
+      //     var time = new Date();
+      //     ws.send(time + '  game1点击了“' + e.target.innerHTML+'”');
+      // }
+      // var time = new Date();
+      // const message = document.createElement('div')
+      // message.className = 'message'
+      // message.innerText = e.data
+      // document.getElementById('message').appendChild(message)
+      // mess.innerHTML+=time+'的消息：'+e.data+'<br>'
     }
   </script>
 </body>

@@ -1,6 +1,7 @@
 const ws = require('nodejs-websocket')
 
 function broadcast(server, msg) {
+  console.log(server.connections)
   server.connections.forEach(function(conn) {
     conn.sendText(msg)
   })
@@ -16,5 +17,8 @@ const server = ws.createServer(function(conn) {
   })
   conn.on('close', function(code, reason) {
     console.log('Connection closed')
+  })
+  conn.on('error', function(code, reason) {
+    console.log('Connection error')
   })
 }).listen(8001)
