@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/YutLee/chat#readme",
   "dependencies": {
+    "jsonwebtoken": "^8.1.0",
+    "memory-cache": "^0.2.0",
+    "mongodb": "^2.2.33",
     "nodejs-websocket": "^1.7.1"
   }
 }

@@ -74,7 +74,7 @@
 <body>
   <header><div class="title">聊天室</div></header>
   <div id="message"></div>
-  <section class="login-box">
+  <section class="login-box open">
     <div class="box">
       <input type="text" value="" />
       <button type="submit">进入聊天室</button>
@@ -105,79 +105,5 @@
       <button id="send-button">发送</button>
     </div>
   </footer>
-  <script>
-    // var mess = document.getElementById('mess');
-    if(window.WebSocket){
-      //
-    }
-
-    function json(str) {
-      let data
-      try{
-        data = JSON.parse(str)
-      }catch(err) {
-        data = null
-      }
-      return data
-    }
-
-    var ws = new WebSocket('ws://192.168.112.15:8001');
-    const loginBoxDom = document.querySelector('.login-box')
-    const nickDom = document.querySelector('.login-box input')
-    const loginButtonDom = document.querySelector('.login-box button')
-    let nick = window.localStorage.nick
-
-    ws.onopen = function(e){
-      console.log('连接服务器成功');
-
-      ws.send(JSON.stringify({nick}))
-
-      loginButtonDom.addEventListener('click', function(event) {
-        nick = (nickDom.value || '').trim()
-        if(!nick) {
-          alert('请输入昵称')
-          return
-        }
-
-        ws.send(JSON.stringify({nick}))
-      }, false)
-    }
-
-    ws.onclose = function(e){
-      console.log('服务器关闭');
-    }
-
-    ws.onerror = function(){
-      console.log('连接出错');
-    }
-
-
-    ws.onmessage = function(e) {
-      const data = json(e.data)
-
-      if(data.code == 401) {
-        nickDom.value = data.nick
-        loginBoxDom.className = 'login-box open'
-        return
-      }
-
-      if(data.code == 200 && data.login) {
-        nickDom.value = ''
-        loginBoxDom.className = 'login-box'
-      }
-      console.log(json(e.data))
-      // mess.innerHTML = '聊天室'
-      // document.querySelector('.kuang').onclick = function(e){
-      //     var time = new Date();
-      //     ws.send(time + '  game1点击了“' + e.target.innerHTML+'”');
-      // }
-      // var time = new Date();
-      // const message = document.createElement('div')
-      // message.className = 'message'
-      // message.innerText = e.data
-      // document.getElementById('message').appendChild(message)
-      // mess.innerHTML+=time+'的消息：'+e.data+'<br>'
-    }
-  </script>
 </body>
 </html>
